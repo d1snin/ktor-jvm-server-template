@@ -1,0 +1,48 @@
+{
+  "databaseChangeLog": [
+    {
+      "changeSet": {
+        "id": "0",
+        "author": "d1snin (me@d1s.dev)",
+        "changes": [
+          {
+            "createSequence": {
+              "sequenceName": "system-uuid",
+              "startValue": 1,
+              "incrementBy": 1
+            }
+          },
+          {
+            "createTable": {
+              "tableName": "",
+              "columns": [
+                {
+                  "column": {
+                    "name": "id",
+                    "type": "text",
+                    "constraints": {
+                      "nullable": false,
+                      "notNullConstraintName": "",
+                      "primaryKey": true,
+                      "primaryKeyName": ""
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "created_at",
+                    "type": "timestamp",
+                    "constraints": {
+                      "nullable": false,
+                      "notNullConstraintName": ""
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

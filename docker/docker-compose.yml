@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  ktor-jvm-server-template:
+    image: ktor-jvm-server-template:latest
+    container_name: ktor-jvm-server-template
+    network_mode: host
+    restart: always
