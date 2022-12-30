@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   ktor-jvm-server-template:
