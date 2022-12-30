@@ -19,12 +19,16 @@ rootProject.name = "ktor-jvm-server-template"
 pluginManagement {
     plugins {
         val kotlinVersion: String by settings
+
         val ktorVersion: String by settings
+
         val koverVersion: String by settings
 
         kotlin("jvm") version kotlinVersion
         kotlin("kapt") version kotlinVersion
+
         id("io.ktor.plugin") version ktorVersion
+
         id("org.jetbrains.kotlinx.kover") version koverVersion
     }
 }

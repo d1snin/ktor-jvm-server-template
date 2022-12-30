@@ -50,12 +50,9 @@ dependencies {
 
     val hikariVersion: String by project
     val postgresqlVersion: String by project
-    val liquibaseVersion: String by project
     val ktormVersion: String by project
 
     val koinVersion: String by project
-
-    val tgbotapiVersion: String by project
 
     val dispatchVersion: String by project
 
@@ -65,16 +62,12 @@ dependencies {
 
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
+    implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
     implementation("dev.d1s:ktor-static-authentication:$ktorStaticAuthVersion")
     implementation("dev.d1s:ktor-server-liquibase:$ktorServerLiquibaseVersion")
     implementation("dev.d1s:ktor-ws-events:$ktorWsEventsVersion")
-    implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
-    implementation("io.ktor:ktor-server-content-negotiation-jvm:2.1.3")
-    implementation("io.ktor:ktor-server-core-jvm:2.1.3")
-    implementation("io.ktor:ktor-serialization-jackson-jvm:2.1.3")
-    implementation("io.ktor:ktor-server-host-common-jvm:2.1.3")
-    implementation("io.ktor:ktor-server-status-pages-jvm:2.1.3")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
 
     implementation("dev.d1s.teabags:teabag-ktor-server:$teabagsVersion")
@@ -87,13 +80,10 @@ dependencies {
 
     implementation("com.zaxxer:HikariCP:$hikariVersion")
     implementation("org.postgresql:postgresql:$postgresqlVersion")
-    implementation("org.liquibase:liquibase-core:$liquibaseVersion")
     implementation("org.ktorm:ktorm-core:$ktormVersion")
 
     implementation("io.insert-koin:koin-ktor:$koinVersion")
     implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
-
-    implementation("dev.inmo:tgbotapi:$tgbotapiVersion")
 
     implementation("com.rickbusarow.dispatch:dispatch-core:$dispatchVersion")
 
