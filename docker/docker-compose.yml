@@ -4,5 +4,40 @@ services:
   ktor-jvm-server-template:
     image: ktor-jvm-server-template:latest
     container_name: ktor-jvm-server-template
-    network_mode: host
     restart: always
+    networks:
+      - ktor-jvm-server-template-net
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - ktor-jvm-server-template-postgres
+
+  ktor-jvm-server-template-postgres:
+    image: postgres:latest
+    container_name: ktor-jvm-server-template-postgres
+    environment:
+      - POSTGRES_DB=database
+      - POSTGRES_USER=postgres_user
+      - POSTGRES_PASSWORD=postgres_password
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    restart: always
+    expose:
+      - "5432"
+    networks:
+      - ktor-jvm-server-template-net
+    volumes:
+      - ktor-jvm-server-template-db-data-postgres:/var/lib/postgresql/data
+      - ktor-jvm-server-template-db-data-postgres-config:/var/lib/postgresql/dataConfig
+
+networks:
+  ktor-jvm-server-template-net:
+    driver: bridge
+
+volumes:
+  ktor-jvm-server-template-db-data-postgres:
+    driver: local
+
+  ktor-jvm-server-template-db-data-postgres-config:
+    driver: local
