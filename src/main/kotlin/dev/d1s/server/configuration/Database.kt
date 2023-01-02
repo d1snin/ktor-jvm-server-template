@@ -23,7 +23,7 @@ import io.ktor.server.application.*
 import org.koin.core.module.Module
 import org.ktorm.database.Database
 
-object Database : Configuration {
+object Database : ApplicationConfigurer {
 
     override fun Application.configure(module: Module) {
         val database = Database.connect(

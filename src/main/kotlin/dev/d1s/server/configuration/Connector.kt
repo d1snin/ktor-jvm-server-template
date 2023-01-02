@@ -16,21 +16,15 @@
 
 package dev.d1s.server.configuration
 
-import dev.d1s.server.listener.ApplicationStartedReporter
 import io.ktor.server.application.*
+import io.ktor.server.engine.*
 import org.koin.core.module.Module
 
-object Events : ApplicationConfigurer {
+object Connector : ServerConfigurer {
 
-    private val eventListeners = listOf(
-        ApplicationStartedReporter
-    )
-
-    override fun Application.configure(module: Module) {
-        eventListeners.forEach { eventListener ->
-            environment.monitor.subscribe(eventListener.eventDefinition) { application ->
-                eventListener.trigger(application)
-            }
+    override fun ApplicationEngineEnvironmentBuilder.configure(module: Module) {
+        connector {
+            port = config.port
         }
     }
 }

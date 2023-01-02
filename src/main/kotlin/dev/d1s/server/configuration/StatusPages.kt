@@ -21,7 +21,7 @@ import io.ktor.server.application.*
 import io.ktor.server.plugins.statuspages.StatusPages
 import org.koin.core.module.Module
 
-object StatusPages : Configuration {
+object StatusPages : ApplicationConfigurer {
 
     override fun Application.configure(module: Module) {
         install(StatusPages) {

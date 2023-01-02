@@ -16,12 +16,11 @@
 
 package dev.d1s.server
 
-import com.typesafe.config.ConfigFactory
 import dev.d1s.server.configuration.*
-import io.ktor.server.application.*
-import io.ktor.server.config.*
+import dev.d1s.server.configuration.Connector.configure
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import org.koin.core.module.Module
 import org.lighthousegames.logging.logging
 import org.koin.dsl.module as koinModule
 
@@ -29,7 +28,10 @@ class ServerApplication {
 
     private val logger = logging()
 
-    private val configurations = listOf(
+    private val configurers = listOf(
+        ConfigSource,
+        Connector,
+
         Config,
         ContentNegotiation,
         Database,
@@ -40,41 +42,45 @@ class ServerApplication {
         StatusPages
     )
 
+    private val serverConfigurers = configurers.filterIsInstance<ServerConfigurer>()
+    private val applicationConfigurers = configurers.filterIsInstance<ApplicationConfigurer>()
+
     fun launch() {
         logger.i {
             "Starting the server..."
         }
 
         val applicationEngineEnvironment = applicationEngineEnvironment {
-            config()
-            module()
-            connector()
+            applyConfigurations()
         }
 
         embeddedServer(Netty, applicationEngineEnvironment).start(wait = true)
     }
 
-    private fun ApplicationEngineEnvironmentBuilder.config() {
-        val loadedHoconConfig = ConfigFactory.load()
-
-        config = HoconApplicationConfig(loadedHoconConfig)
-    }
-
-    private fun ApplicationEngineEnvironmentBuilder.module() {
+    private fun ApplicationEngineEnvironmentBuilder.applyConfigurations() {
         module {
             val koinModule = koinModule {}
 
-            configurations.forEach {
-                with(it) {
-                    configure(koinModule)
-                }
-            }
+            applyServerConfigurations(koinModule)
+            applyApplicationConfigurations(koinModule)
         }
     }
 
-    private fun ApplicationEngineEnvironmentBuilder.connector() {
-        connector {
-            port = config.port
+    private fun ApplicationEngineEnvironmentBuilder.applyServerConfigurations(koinModule: Module) {
+        serverConfigurers.withEach {
+            configure(koinModule)
+        }
+    }
+
+    private fun ApplicationEngineEnvironmentBuilder.applyApplicationConfigurations(koinModule: Module) {
+        applicationConfigurers.withEach {
+            configure(koinModule)
+        }
+    }
+
+    private inline fun <T> List<T>.withEach(block: T.() -> Unit) = this.forEach {
+        with(it) {
+            block()
         }
     }
 }

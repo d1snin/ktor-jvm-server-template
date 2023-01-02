@@ -21,7 +21,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.routing.*
 import org.koin.core.module.Module
 
-object Routing : Configuration {
+object Routing : ApplicationConfigurer {
 
     override fun Application.configure(module: Module) {
         routing {

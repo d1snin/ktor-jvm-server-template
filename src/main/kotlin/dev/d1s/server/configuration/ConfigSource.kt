@@ -16,21 +16,16 @@
 
 package dev.d1s.server.configuration
 
-import dev.d1s.server.listener.ApplicationStartedReporter
-import io.ktor.server.application.*
+import com.typesafe.config.ConfigFactory
+import io.ktor.server.config.*
+import io.ktor.server.engine.*
 import org.koin.core.module.Module
 
-object Events : ApplicationConfigurer {
+object ConfigSource : ServerConfigurer {
 
-    private val eventListeners = listOf(
-        ApplicationStartedReporter
-    )
+    override fun ApplicationEngineEnvironmentBuilder.configure(module: Module) {
+        val loadedHoconConfig = ConfigFactory.load()
 
-    override fun Application.configure(module: Module) {
-        eventListeners.forEach { eventListener ->
-            environment.monitor.subscribe(eventListener.eventDefinition) { application ->
-                eventListener.trigger(application)
-            }
-        }
+        config = HoconApplicationConfig(loadedHoconConfig)
     }
 }

@@ -21,7 +21,7 @@ import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import org.koin.core.module.Module
 
-object ContentNegotiation : Configuration {
+object ContentNegotiation : ApplicationConfigurer {
 
     override fun Application.configure(module: Module) {
         install(ContentNegotiation) {

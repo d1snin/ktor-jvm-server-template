@@ -16,21 +16,9 @@
 
 package dev.d1s.server.configuration
 
-import dev.d1s.server.listener.ApplicationStartedReporter
-import io.ktor.server.application.*
 import org.koin.core.module.Module
 
-object Events : ApplicationConfigurer {
+interface Configurer<TSubject> {
 
-    private val eventListeners = listOf(
-        ApplicationStartedReporter
-    )
-
-    override fun Application.configure(module: Module) {
-        eventListeners.forEach { eventListener ->
-            environment.monitor.subscribe(eventListener.eventDefinition) { application ->
-                eventListener.trigger(application)
-            }
-        }
-    }
+    fun TSubject.configure(module: Module)
 }

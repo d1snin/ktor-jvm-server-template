@@ -21,7 +21,7 @@ import org.koin.core.module.Module
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 
-object Di : Configuration {
+object Di : ApplicationConfigurer {
 
     override fun Application.configure(module: Module) {
         install(Koin) {

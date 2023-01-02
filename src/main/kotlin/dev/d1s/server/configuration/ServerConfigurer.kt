@@ -16,10 +16,6 @@
 
 package dev.d1s.server.configuration
 
-import io.ktor.server.application.*
-import org.koin.core.module.Module
+import io.ktor.server.engine.*
 
-interface Configuration {
-
-    fun Application.configure(module: Module)
-}
+interface ServerConfigurer : Configurer<ApplicationEngineEnvironmentBuilder>

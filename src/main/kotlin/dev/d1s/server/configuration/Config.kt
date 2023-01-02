@@ -19,7 +19,7 @@ package dev.d1s.server.configuration
 import io.ktor.server.application.*
 import org.koin.core.module.Module
 
-object Config : Configuration {
+object Config : ApplicationConfigurer {
 
     override fun Application.configure(module: Module) {
         module.single {

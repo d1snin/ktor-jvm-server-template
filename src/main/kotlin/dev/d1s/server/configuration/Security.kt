@@ -21,7 +21,7 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import org.koin.core.module.Module
 
-object Security : Configuration {
+object Security : ApplicationConfigurer {
 
     override fun Application.configure(module: Module) {
         authentication {
