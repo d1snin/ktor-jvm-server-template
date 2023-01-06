@@ -24,7 +24,6 @@ object TestConfigurers {
     val ApplicationConfigurers = configurers().filterIsInstance<ApplicationConfigurer>()
 
     private fun configurers() = listOf(
-        ConfigSource,
         ContentNegotiation,
         Service,
         Routing,

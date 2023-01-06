@@ -16,9 +16,9 @@
 
 package dev.d1s.server
 
-import com.typesafe.config.ConfigFactory
 import dev.d1s.server.configuration.Configurers
 import dev.d1s.server.route.RouteInstaller
+import dev.d1s.server.util.makeHoconApplicationConfig
 import dev.d1s.server.util.withEach
 import io.ktor.server.application.*
 import io.ktor.server.config.*
@@ -67,15 +67,17 @@ class ServerApplication : KoinComponent {
     }
 
     private fun ApplicationEngineEnvironmentBuilder.loadConfig(): ApplicationConfig {
-        val loadedHoconConfig = ConfigFactory.load()
-        val hoconConfig = HoconApplicationConfig(loadedHoconConfig)
+        val hoconConfig = makeHoconApplicationConfig()
 
         config = hoconConfig
 
         return hoconConfig
     }
 
-    private fun ApplicationEngineEnvironmentBuilder.applyServerConfigurations(koinModule: Module, config: ApplicationConfig) {
+    private fun ApplicationEngineEnvironmentBuilder.applyServerConfigurations(
+        koinModule: Module,
+        config: ApplicationConfig
+    ) {
         logger.d {
             "Applying server configurations..."
         }

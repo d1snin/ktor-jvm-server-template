@@ -18,11 +18,13 @@ package dev.d1s.server
 
 import dev.d1s.server.route.RouteInstaller
 import dev.d1s.server.testconfiguration.TestConfigurers
+import dev.d1s.server.util.makeHoconApplicationConfig
 import dev.d1s.server.util.withEach
 import io.ktor.client.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
+import io.ktor.server.config.*
 import io.ktor.server.engine.*
 import io.ktor.server.testing.*
 import org.koin.core.component.KoinComponent
@@ -40,12 +42,17 @@ fun withTestApplication(block: suspend ApplicationTestBuilder.(HttpClient) -> Un
 
     val koinModule = koinModule {}
 
+    val hoconConfig = makeHoconApplicationConfig()
+
     environment {
-        applyServerConfigurations(koinModule)
+        config = hoconConfig
+
+        applyServerConfigurations(koinModule, hoconConfig)
     }
 
     application {
-        applyApplicationConfigurations(koinModule)
+
+        applyApplicationConfigurations(koinModule, hoconConfig)
     }
 
     val client = makeClient()
@@ -55,23 +62,26 @@ fun withTestApplication(block: suspend ApplicationTestBuilder.(HttpClient) -> Un
     block(client)
 }
 
-private fun ApplicationEngineEnvironmentBuilder.applyServerConfigurations(koinModule: Module) {
+private fun ApplicationEngineEnvironmentBuilder.applyServerConfigurations(
+    koinModule: Module,
+    config: ApplicationConfig
+) {
     logger.i {
         "Applying test server configurations..."
     }
 
     TestConfigurers.ServerConfigurers.withEach {
-        configure(koinModule)
+        configure(koinModule, config)
     }
 }
 
-private fun Application.applyApplicationConfigurations(koinModule: Module) {
+private fun Application.applyApplicationConfigurations(koinModule: Module, config: ApplicationConfig) {
     logger.i {
         "Applying test application configurations..."
     }
 
     TestConfigurers.ApplicationConfigurers.withEach {
-        configure(koinModule)
+        configure(koinModule, config)
     }
 }
 

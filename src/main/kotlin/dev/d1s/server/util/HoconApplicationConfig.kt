@@ -14,22 +14,13 @@
  * limitations under the License.
  */
 
-package dev.d1s.server.configuration
+package dev.d1s.server.util
 
-object Configurers {
+import com.typesafe.config.ConfigFactory
+import io.ktor.server.config.*
 
-    val ServerConfigurers = configurers().filterIsInstance<ServerConfigurer>()
-    val ApplicationConfigurers = configurers().filterIsInstance<ApplicationConfigurer>()
+fun makeHoconApplicationConfig(): ApplicationConfig {
+    val loadedHoconConfig = ConfigFactory.load()
 
-    private fun configurers() = listOf(
-        Connector,
-        ContentNegotiation,
-        Database,
-        Service,
-        Routing,
-        Events,
-        Security,
-        StatusPages,
-        Di
-    )
+    return HoconApplicationConfig(loadedHoconConfig)
 }
