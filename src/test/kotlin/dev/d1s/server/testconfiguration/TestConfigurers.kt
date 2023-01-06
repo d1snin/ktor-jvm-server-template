@@ -14,23 +14,20 @@
  * limitations under the License.
  */
 
-package dev.d1s.server.configuration
+package dev.d1s.server.testconfiguration
 
-import io.ktor.server.application.*
-import org.koin.core.module.Module
-import org.lighthousegames.logging.logging
+import dev.d1s.server.configuration.*
 
-object Config : ApplicationConfigurer {
+object TestConfigurers {
 
-    private val logger = logging()
+    val ServerConfigurers = configurers().filterIsInstance<ServerConfigurer>()
+    val ApplicationConfigurers = configurers().filterIsInstance<ApplicationConfigurer>()
 
-    override fun Application.configure(module: Module) {
-        logger.d {
-            "Defining config bean..."
-        }
-
-        module.single {
-            environment.config
-        }
-    }
+    private fun configurers() = listOf(
+        ConfigSource,
+        ContentNegotiation,
+        Service,
+        Routing,
+        Di
+    )
 }

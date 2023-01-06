@@ -16,38 +16,22 @@
 
 package dev.d1s.server.configuration
 
-import dev.d1s.server.route.DefaultRouteInstaller
-import dev.d1s.server.route.GetMessageRoute
-import dev.d1s.server.route.Route
-import dev.d1s.server.route.RouteInstaller
+import dev.d1s.server.service.DefaultMessageService
+import dev.d1s.server.service.MessageService
 import io.ktor.server.application.*
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.singleOf
 import org.lighthousegames.logging.logging
 
-object Routing : ApplicationConfigurer {
+object Service : ApplicationConfigurer {
 
     private val logger = logging()
 
     override fun Application.configure(module: Module) {
         logger.d {
-            "Configuring request routing..."
+            "Configuring services..."
         }
 
-        with(module) {
-            routes()
-            routeInstaller()
-        }
-    }
-
-    private fun Module.routes() {
-        single<Route> {
-            GetMessageRoute()
-        }
-    }
-
-    private fun Module.routeInstaller() {
-        single<RouteInstaller> {
-            DefaultRouteInstaller()
-        }
+        module.singleOf<MessageService>(::DefaultMessageService)
     }
 }

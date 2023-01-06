@@ -20,10 +20,17 @@ import dev.d1s.ktor.staticauth.static
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import org.koin.core.module.Module
+import org.lighthousegames.logging.logging
 
 object Security : ApplicationConfigurer {
 
+    private val logger = logging()
+
     override fun Application.configure(module: Module) {
+        logger.d {
+            "Configuring security..."
+        }
+
         authentication {
             static()
         }

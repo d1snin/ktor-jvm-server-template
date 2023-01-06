@@ -16,34 +16,24 @@
 
 package dev.d1s.server
 
-import dev.d1s.server.configuration.*
-import dev.d1s.server.configuration.Connector.configure
+import dev.d1s.server.configuration.Configurers
+import dev.d1s.server.route.RouteInstaller
+import dev.d1s.server.util.withEach
+import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import io.ktor.server.routing.*
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.koin.core.module.Module
 import org.lighthousegames.logging.logging
 import org.koin.dsl.module as koinModule
 
-class ServerApplication {
+class ServerApplication : KoinComponent {
+
+    private val routeInstaller by inject<RouteInstaller>()
 
     private val logger = logging()
-
-    private val configurers = listOf(
-        ConfigSource,
-        Connector,
-
-        Config,
-        ContentNegotiation,
-        Database,
-        Di,
-        Events,
-        Routing,
-        Security,
-        StatusPages
-    )
-
-    private val serverConfigurers = configurers.filterIsInstance<ServerConfigurer>()
-    private val applicationConfigurers = configurers.filterIsInstance<ApplicationConfigurer>()
 
     fun launch() {
         logger.i {
@@ -58,29 +48,45 @@ class ServerApplication {
     }
 
     private fun ApplicationEngineEnvironmentBuilder.applyConfigurations() {
+        logger.i {
+            "Applying configurations..."
+        }
+
         module {
             val koinModule = koinModule {}
 
             applyServerConfigurations(koinModule)
             applyApplicationConfigurations(koinModule)
+
+            installRoutes()
         }
     }
 
     private fun ApplicationEngineEnvironmentBuilder.applyServerConfigurations(koinModule: Module) {
-        serverConfigurers.withEach {
+        logger.d {
+            "Applying server configurations..."
+        }
+
+        Configurers.ServerConfigurers.withEach {
             configure(koinModule)
         }
     }
 
-    private fun ApplicationEngineEnvironmentBuilder.applyApplicationConfigurations(koinModule: Module) {
-        applicationConfigurers.withEach {
+    private fun Application.applyApplicationConfigurations(koinModule: Module) {
+        logger.d {
+            "Applying application configurations..."
+        }
+
+        Configurers.ApplicationConfigurers.withEach {
             configure(koinModule)
         }
     }
 
-    private inline fun <T> List<T>.withEach(block: T.() -> Unit) = this.forEach {
-        with(it) {
-            block()
+    private fun Application.installRoutes() {
+        routing {
+            with(routeInstaller) {
+                installRoutes()
+            }
         }
     }
 }

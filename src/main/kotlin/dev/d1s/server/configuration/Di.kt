@@ -20,10 +20,17 @@ import io.ktor.server.application.*
 import org.koin.core.module.Module
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
+import org.lighthousegames.logging.logging
 
 object Di : ApplicationConfigurer {
 
+    private val logger = logging()
+
     override fun Application.configure(module: Module) {
+        logger.d {
+            "Configuring DI..."
+        }
+
         install(Koin) {
             slf4jLogger()
             modules(module)

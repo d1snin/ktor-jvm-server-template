@@ -20,10 +20,17 @@ import com.typesafe.config.ConfigFactory
 import io.ktor.server.config.*
 import io.ktor.server.engine.*
 import org.koin.core.module.Module
+import org.lighthousegames.logging.logging
 
 object ConfigSource : ServerConfigurer {
 
+    private val logger = logging()
+
     override fun ApplicationEngineEnvironmentBuilder.configure(module: Module) {
+        logger.d {
+            "Defining config source"
+        }
+
         val loadedHoconConfig = ConfigFactory.load()
 
         config = HoconApplicationConfig(loadedHoconConfig)

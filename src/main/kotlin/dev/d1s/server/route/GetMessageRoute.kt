@@ -14,23 +14,24 @@
  * limitations under the License.
  */
 
-package dev.d1s.server.configuration
+package dev.d1s.server.route
 
+import dev.d1s.server.service.MessageService
 import io.ktor.server.application.*
-import org.koin.core.module.Module
-import org.lighthousegames.logging.logging
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-object Config : ApplicationConfigurer {
+class GetMessageRoute : Route, KoinComponent {
 
-    private val logger = logging()
+    private val messageService by inject<MessageService>()
 
-    override fun Application.configure(module: Module) {
-        logger.d {
-            "Defining config bean..."
-        }
+    override fun Routing.apply() {
+        get(Routes.GET_MESSAGE_ROUTE) {
+            val message = messageService.makeGreetingMessage()
 
-        module.single {
-            environment.config
+            call.respond(message)
         }
     }
 }

@@ -14,23 +14,8 @@
  * limitations under the License.
  */
 
-package dev.d1s.server.configuration
+package dev.d1s.server.util
 
-import io.ktor.server.application.*
-import org.koin.core.module.Module
-import org.lighthousegames.logging.logging
-
-object Config : ApplicationConfigurer {
-
-    private val logger = logging()
-
-    override fun Application.configure(module: Module) {
-        logger.d {
-            "Defining config bean..."
-        }
-
-        module.single {
-            environment.config
-        }
-    }
+inline fun <T> List<T>.withEach(block: T.() -> Unit) = this.forEach {
+    it.block()
 }

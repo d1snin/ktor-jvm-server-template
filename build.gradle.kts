@@ -59,6 +59,7 @@ dependencies {
     val kotlinVersion: String by project
 
     val mockkVersion: String by project
+    val striktVersion: String by project
 
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
@@ -69,6 +70,7 @@ dependencies {
     implementation("dev.d1s:ktor-server-liquibase:$ktorServerLiquibaseVersion")
     implementation("dev.d1s:ktor-ws-events:$ktorWsEventsVersion")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
+    testImplementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
 
     implementation("dev.d1s.teabags:teabag-ktor-server:$teabagsVersion")
     implementation("dev.d1s.teabags:teabag-dto:$teabagsVersion")
@@ -90,6 +92,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
 
     testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("io.strikt:strikt-core:$striktVersion")
 }
 
 application {

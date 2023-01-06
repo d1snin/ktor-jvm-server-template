@@ -14,23 +14,25 @@
  * limitations under the License.
  */
 
-package dev.d1s.server.configuration
+package dev.d1s.server.route
 
-import io.ktor.server.application.*
-import org.koin.core.module.Module
-import org.lighthousegames.logging.logging
+import dev.d1s.server.dto.Message
+import dev.d1s.server.withTestApplication
+import io.ktor.client.call.*
+import io.ktor.client.request.*
+import io.ktor.http.*
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
+import kotlin.test.Test
 
-object Config : ApplicationConfigurer {
+class GetMessageRouteTest {
 
-    private val logger = logging()
+    @Test
+    fun `test message route`() = withTestApplication { client ->
+        val response = client.get(Routes.GET_MESSAGE_ROUTE)
+        val body: Message = response.body()
 
-    override fun Application.configure(module: Module) {
-        logger.d {
-            "Defining config bean..."
-        }
-
-        module.single {
-            environment.config
-        }
+        expectThat(response.status) isEqualTo HttpStatusCode.OK
+        expectThat(body.message) isEqualTo "Hello, world!"
     }
 }

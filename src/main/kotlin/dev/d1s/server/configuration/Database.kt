@@ -22,10 +22,17 @@ import dev.d1s.teabag.ktor.server.tryRetrieveDbProperties
 import io.ktor.server.application.*
 import org.koin.core.module.Module
 import org.ktorm.database.Database
+import org.lighthousegames.logging.logging
 
 object Database : ApplicationConfigurer {
 
+    private val logger = logging()
+
     override fun Application.configure(module: Module) {
+        logger.d {
+            "Configuring Database connection... Running migrations..."
+        }
+
         val database = Database.connect(
             HikariDataSource().apply {
                 environment.config.tryRetrieveDbProperties().let {

@@ -14,23 +14,11 @@
  * limitations under the License.
  */
 
-package dev.d1s.server.configuration
+package dev.d1s.server.route
 
-import io.ktor.server.application.*
-import org.koin.core.module.Module
-import org.lighthousegames.logging.logging
+import io.ktor.server.routing.*
 
-object Config : ApplicationConfigurer {
+interface Route {
 
-    private val logger = logging()
-
-    override fun Application.configure(module: Module) {
-        logger.d {
-            "Defining config bean..."
-        }
-
-        module.single {
-            environment.config
-        }
-    }
+    fun Routing.apply()
 }

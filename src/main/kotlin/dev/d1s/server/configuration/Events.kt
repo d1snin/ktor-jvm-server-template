@@ -19,6 +19,7 @@ package dev.d1s.server.configuration
 import dev.d1s.server.listener.ApplicationStartedReporter
 import io.ktor.server.application.*
 import org.koin.core.module.Module
+import org.lighthousegames.logging.logging
 
 object Events : ApplicationConfigurer {
 
@@ -26,7 +27,13 @@ object Events : ApplicationConfigurer {
         ApplicationStartedReporter
     )
 
+    private val logger = logging()
+
     override fun Application.configure(module: Module) {
+        logger.d {
+            "Configuring event listeners..."
+        }
+
         eventListeners.forEach { eventListener ->
             environment.monitor.subscribe(eventListener.eventDefinition) { application ->
                 eventListener.trigger(application)

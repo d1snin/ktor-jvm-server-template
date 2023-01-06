@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-package dev.d1s.server.configuration
+package dev.d1s.server.service
 
-import io.ktor.server.application.*
-import org.koin.core.module.Module
-import org.lighthousegames.logging.logging
+import dev.d1s.server.dto.Message
 
-object Config : ApplicationConfigurer {
+interface MessageService {
 
-    private val logger = logging()
+    fun makeGreetingMessage(): Message
+}
 
-    override fun Application.configure(module: Module) {
-        logger.d {
-            "Defining config bean..."
-        }
+class DefaultMessageService : MessageService {
 
-        module.single {
-            environment.config
-        }
+    override fun makeGreetingMessage() = Message(MESSAGE_CONTENT)
+
+    private companion object {
+
+        private const val MESSAGE_CONTENT = "Hello, world!"
     }
 }

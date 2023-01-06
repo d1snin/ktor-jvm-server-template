@@ -19,10 +19,17 @@ package dev.d1s.server.configuration
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import org.koin.core.module.Module
+import org.lighthousegames.logging.logging
 
 object Connector : ServerConfigurer {
 
+    private val logger = logging()
+
     override fun ApplicationEngineEnvironmentBuilder.configure(module: Module) {
+        logger.d {
+            "Configuring connector..."
+        }
+
         connector {
             port = config.port
         }

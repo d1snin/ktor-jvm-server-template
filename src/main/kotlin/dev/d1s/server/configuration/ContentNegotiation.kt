@@ -20,10 +20,17 @@ import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import org.koin.core.module.Module
+import org.lighthousegames.logging.logging
 
 object ContentNegotiation : ApplicationConfigurer {
 
+    private val logger = logging()
+
     override fun Application.configure(module: Module) {
+        logger.d {
+            "Configuring content negotiation..."
+        }
+
         install(ContentNegotiation) {
             jackson()
         }

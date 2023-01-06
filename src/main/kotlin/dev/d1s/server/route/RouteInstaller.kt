@@ -14,23 +14,33 @@
  * limitations under the License.
  */
 
-package dev.d1s.server.configuration
+package dev.d1s.server.route
 
-import io.ktor.server.application.*
-import org.koin.core.module.Module
+import dev.d1s.server.util.withEach
+import io.ktor.server.routing.*
+import org.koin.core.component.KoinComponent
 import org.lighthousegames.logging.logging
 
-object Config : ApplicationConfigurer {
+interface RouteInstaller {
+
+    fun Routing.installRoutes()
+}
+
+class DefaultRouteInstaller : RouteInstaller, KoinComponent {
+
+    private val routes by lazy {
+        getKoin().getAll<Route>()
+    }
 
     private val logger = logging()
 
-    override fun Application.configure(module: Module) {
+    override fun Routing.installRoutes() {
         logger.d {
-            "Defining config bean..."
+            "Installing routes..."
         }
 
-        module.single {
-            environment.config
+        routes.withEach {
+            apply()
         }
     }
 }

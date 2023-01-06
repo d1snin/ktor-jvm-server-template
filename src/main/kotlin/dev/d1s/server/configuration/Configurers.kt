@@ -16,21 +16,22 @@
 
 package dev.d1s.server.configuration
 
-import io.ktor.server.application.*
-import org.koin.core.module.Module
-import org.lighthousegames.logging.logging
+object Configurers {
 
-object Config : ApplicationConfigurer {
+    val ServerConfigurers = configurers().filterIsInstance<ServerConfigurer>()
+    val ApplicationConfigurers = configurers().filterIsInstance<ApplicationConfigurer>()
 
-    private val logger = logging()
-
-    override fun Application.configure(module: Module) {
-        logger.d {
-            "Defining config bean..."
-        }
-
-        module.single {
-            environment.config
-        }
-    }
+    private fun configurers() = listOf(
+        ConfigSource,
+        Connector,
+        Config,
+        ContentNegotiation,
+        Database,
+        Service,
+        Routing,
+        Events,
+        Security,
+        StatusPages,
+        Di
+    )
 }
