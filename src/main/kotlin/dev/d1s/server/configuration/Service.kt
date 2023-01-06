@@ -19,6 +19,7 @@ package dev.d1s.server.configuration
 import dev.d1s.server.service.DefaultMessageService
 import dev.d1s.server.service.MessageService
 import io.ktor.server.application.*
+import io.ktor.server.config.*
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.lighthousegames.logging.logging
@@ -27,7 +28,7 @@ object Service : ApplicationConfigurer {
 
     private val logger = logging()
 
-    override fun Application.configure(module: Module) {
+    override fun Application.configure(module: Module, config: ApplicationConfig) {
         logger.d {
             "Configuring services..."
         }

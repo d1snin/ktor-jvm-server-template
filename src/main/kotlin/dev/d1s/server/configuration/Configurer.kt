@@ -16,9 +16,10 @@
 
 package dev.d1s.server.configuration
 
+import io.ktor.server.config.*
 import org.koin.core.module.Module
 
 interface Configurer<TSubject> {
 
-    fun TSubject.configure(module: Module)
+    fun TSubject.configure(module: Module, config: ApplicationConfig)
 }

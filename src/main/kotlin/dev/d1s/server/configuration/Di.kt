@@ -17,6 +17,7 @@
 package dev.d1s.server.configuration
 
 import io.ktor.server.application.*
+import io.ktor.server.config.*
 import org.koin.core.module.Module
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
@@ -26,7 +27,7 @@ object Di : ApplicationConfigurer {
 
     private val logger = logging()
 
-    override fun Application.configure(module: Module) {
+    override fun Application.configure(module: Module, config: ApplicationConfig) {
         logger.d {
             "Configuring DI..."
         }

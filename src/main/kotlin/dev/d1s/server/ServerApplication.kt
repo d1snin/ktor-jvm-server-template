@@ -16,10 +16,12 @@
 
 package dev.d1s.server
 
+import com.typesafe.config.ConfigFactory
 import dev.d1s.server.configuration.Configurers
 import dev.d1s.server.route.RouteInstaller
 import dev.d1s.server.util.withEach
 import io.ktor.server.application.*
+import io.ktor.server.config.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.routing.*
@@ -55,30 +57,41 @@ class ServerApplication : KoinComponent {
         module {
             val koinModule = koinModule {}
 
-            applyServerConfigurations(koinModule)
-            applyApplicationConfigurations(koinModule)
+            val config = loadConfig()
+
+            applyServerConfigurations(koinModule, config)
+            applyApplicationConfigurations(koinModule, config)
 
             installRoutes()
         }
     }
 
-    private fun ApplicationEngineEnvironmentBuilder.applyServerConfigurations(koinModule: Module) {
+    private fun ApplicationEngineEnvironmentBuilder.loadConfig(): ApplicationConfig {
+        val loadedHoconConfig = ConfigFactory.load()
+        val hoconConfig = HoconApplicationConfig(loadedHoconConfig)
+
+        config = hoconConfig
+
+        return hoconConfig
+    }
+
+    private fun ApplicationEngineEnvironmentBuilder.applyServerConfigurations(koinModule: Module, config: ApplicationConfig) {
         logger.d {
             "Applying server configurations..."
         }
 
         Configurers.ServerConfigurers.withEach {
-            configure(koinModule)
+            configure(koinModule, config)
         }
     }
 
-    private fun Application.applyApplicationConfigurations(koinModule: Module) {
+    private fun Application.applyApplicationConfigurations(koinModule: Module, config: ApplicationConfig) {
         logger.d {
             "Applying application configurations..."
         }
 
         Configurers.ApplicationConfigurers.withEach {
-            configure(koinModule)
+            configure(koinModule, config)
         }
     }
 

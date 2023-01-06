@@ -17,6 +17,7 @@
 package dev.d1s.server.configuration
 
 import io.ktor.server.application.*
+import io.ktor.server.config.*
 import io.ktor.server.engine.*
 import org.koin.core.module.Module
 import org.lighthousegames.logging.logging
@@ -25,7 +26,7 @@ object Connector : ServerConfigurer {
 
     private val logger = logging()
 
-    override fun ApplicationEngineEnvironmentBuilder.configure(module: Module) {
+    override fun ApplicationEngineEnvironmentBuilder.configure(module: Module, config: ApplicationConfig) {
         logger.d {
             "Configuring connector..."
         }

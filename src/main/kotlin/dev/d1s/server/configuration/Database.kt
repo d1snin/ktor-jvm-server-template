@@ -20,6 +20,7 @@ import com.zaxxer.hikari.HikariDataSource
 import dev.d1s.ktor.liquibase.plugin.LiquibaseMigrations
 import dev.d1s.teabag.ktor.server.tryRetrieveDbProperties
 import io.ktor.server.application.*
+import io.ktor.server.config.*
 import org.koin.core.module.Module
 import org.ktorm.database.Database
 import org.lighthousegames.logging.logging
@@ -28,14 +29,14 @@ object Database : ApplicationConfigurer {
 
     private val logger = logging()
 
-    override fun Application.configure(module: Module) {
+    override fun Application.configure(module: Module, config: ApplicationConfig) {
         logger.d {
             "Configuring Database connection... Running migrations..."
         }
 
         val database = Database.connect(
             HikariDataSource().apply {
-                environment.config.tryRetrieveDbProperties().let {
+                config.tryRetrieveDbProperties().let {
                     jdbcUrl = it.url
                     username = it.user
                     password = it.password

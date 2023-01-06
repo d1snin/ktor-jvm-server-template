@@ -18,6 +18,7 @@ package dev.d1s.server.configuration
 
 import dev.d1s.teabag.ktor.server.handleCommonExceptions
 import io.ktor.server.application.*
+import io.ktor.server.config.*
 import io.ktor.server.plugins.statuspages.StatusPages
 import org.koin.core.module.Module
 import org.lighthousegames.logging.logging
@@ -26,7 +27,7 @@ object StatusPages : ApplicationConfigurer {
 
     private val logger = logging()
 
-    override fun Application.configure(module: Module) {
+    override fun Application.configure(module: Module, config: ApplicationConfig) {
         logger.d {
             "Configuring status pages..."
         }

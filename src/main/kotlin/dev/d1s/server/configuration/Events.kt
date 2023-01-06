@@ -18,6 +18,7 @@ package dev.d1s.server.configuration
 
 import dev.d1s.server.listener.ApplicationStartedReporter
 import io.ktor.server.application.*
+import io.ktor.server.config.*
 import org.koin.core.module.Module
 import org.lighthousegames.logging.logging
 
@@ -29,7 +30,7 @@ object Events : ApplicationConfigurer {
 
     private val logger = logging()
 
-    override fun Application.configure(module: Module) {
+    override fun Application.configure(module: Module, config: ApplicationConfig) {
         logger.d {
             "Configuring event listeners..."
         }

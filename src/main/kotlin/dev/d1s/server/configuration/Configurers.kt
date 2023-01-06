@@ -22,7 +22,6 @@ object Configurers {
     val ApplicationConfigurers = configurers().filterIsInstance<ApplicationConfigurer>()
 
     private fun configurers() = listOf(
-        ConfigSource,
         Connector,
         Config,
         ContentNegotiation,

@@ -21,6 +21,7 @@ import dev.d1s.server.route.GetMessageRoute
 import dev.d1s.server.route.Route
 import dev.d1s.server.route.RouteInstaller
 import io.ktor.server.application.*
+import io.ktor.server.config.*
 import org.koin.core.module.Module
 import org.lighthousegames.logging.logging
 
@@ -28,7 +29,7 @@ object Routing : ApplicationConfigurer {
 
     private val logger = logging()
 
-    override fun Application.configure(module: Module) {
+    override fun Application.configure(module: Module, config: ApplicationConfig) {
         logger.d {
             "Configuring request routing..."
         }
